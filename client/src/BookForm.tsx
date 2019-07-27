@@ -6,7 +6,7 @@ import React, {
   useEffect,
   ChangeEvent
 } from "react";
-import { Formik, Form, Field, FieldProps } from "formik";
+import { Formik, Form, Field, FieldProps, FormikActions } from "formik";
 import * as Yup from "yup";
 import {
   makeStyles,
@@ -22,7 +22,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 
-import { Book } from "./common/Book";
+import { Book, BookData } from "./common/Book";
 import { addBook } from "./utils/api";
 
 const useStyles = makeStyles(
@@ -76,7 +76,7 @@ const BookSchema = Yup.object().shape({
 });
 
 interface IProps {
-  addNewBook: (newBook: Book) => void;
+  addNewBook: (newBook: BookData) => void;
 }
 
 const initialState = {
@@ -107,34 +107,35 @@ const BookForm: FunctionComponent<IProps> = ({ addNewBook }) => {
     }));
   };
 
-  const onChange = (name: keyof Book) => (
+  const onChange = (name: keyof BookData) => (
     event: ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    console.log(event)
     setValues({
       ...values,
       [name]: event.target.value
     });
   };
 
-  const handleSubmit = (): void => {
+  const handleSubmit = (actions: FormikActions<Book>) => {
     addBook(values);
-    addNewBook(values);
+    addNewBook(values as BookData);
     setValues(initialState.book);
+    actions.resetForm()
   };
 
   return (
     <Formik
       initialValues={values}
       validationSchema={BookSchema}
-      onSubmit={handleSubmit}
+      onSubmit={(_, actions: FormikActions<Book>) => {
+        handleSubmit(actions)
+      }}
+      
       render={({ handleChange, handleBlur }): ReactElement => (
         <Form className={classes.container}>
           <Field
-            validateOnBlur
-            validateOnChange
             validateOnSubmit
             name="title"
             render={({ field, form }: FieldProps<Book>): ReactElement => (
@@ -189,6 +190,7 @@ const BookForm: FunctionComponent<IProps> = ({ addNewBook }) => {
             )}
           />
           <Field
+            validateOnSubmit
             name="ISBN"
             render={({ field, form }: FieldProps<Book>): ReactElement => (
               <div>
