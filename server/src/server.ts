@@ -3,7 +3,7 @@ import Inert from '@hapi/inert';
 import Vision from '@hapi/vision';
 import HapiSwagger from 'hapi-swagger';
 
-import { BookRoutePlugin } from './routes/BookRoutes';
+import { BookRoutePlugin } from './routes/bookRoutes';
 
 export async function getServer() {
   const port = 8080;

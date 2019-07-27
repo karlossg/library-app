@@ -2,10 +2,10 @@ import Joi from 'joi';
 
 export const BookDataSchema = Joi.object({
   title: Joi.string().required(),
-  author: Joi.string().required(),
+  author: Joi.string().allow('').required(),
   ISBN: Joi.string().regex(/((978[\--– ])?[0-9][0-9\--– ]{10}[\--– ][0-9xX])|((978)?[0-9]{9}[0-9Xx])/).required(),
-  pages: Joi.number().required(),
-  rate: Joi.number().required(),
+  pages: Joi.number().allow(0).required(),
+  rate: Joi.number().min(0).allow(0).required(),
 }).label('BookData').required();
 
 export const BookSchema = BookDataSchema.keys({
@@ -17,7 +17,7 @@ export type BookData = Joi.SchemaValue<typeof BookDataSchema>;
 export type Book = Joi.SchemaValue<typeof BookSchema>;
 
 let lastId = 0;
-let books: Book[] = [{ title: 'test', id: 1, author: 'trololo', ISBN: '978-1-4302-1998-9', pages: 333, rate: 2, addedOn: new Date('11-02-2012') }];
+let books: Book[] = [];
 
 export async function getAllBooks(): Promise<Book[]> {
   return books;
