@@ -1,0 +1,12 @@
+{
+  "name": "library_server_app",
+  "version": "1.0.0",
+  "description": "rest server for library app",
+  "main": "index.js",
+  "author": "Karol Grabowski",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "typescript": "3.4"
+  }
+}
