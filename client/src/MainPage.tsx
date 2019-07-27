@@ -1,11 +1,12 @@
-import React, { useState, useEffect, Fragment } from 'react'
-
+import React, { useState, useEffect, Fragment, FunctionComponent } from 'react'
+ 
 import { fetchAllBooks } from './utils/api'
 import { sortByTitle } from './utils/helpers'
+import { Book } from './common/Book';
 
-const MainPage = () => {
-  const [data, setData] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+const MainPage: FunctionComponent = () => {
+  const [data, setData] = useState<Book[]>([])
+  const [isLoading, setIsLoading] = useState<Boolean>(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,8 +31,8 @@ const MainPage = () => {
           {data.length === 0 ? (
             <div> No books found </div>
           ) : (
-            data.sort((a: any, b: any) => sortByTitle(a, b))
-              .map((book: any) => (
+            data.sort((a: Book, b: Book) => sortByTitle(a, b))
+              .map((book) => (
                   <p key={book.id}>{book.title}</p>
               ))
           )}
