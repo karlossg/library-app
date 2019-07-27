@@ -6,7 +6,13 @@ import React, {
   useEffect,
   ChangeEvent
 } from "react";
-import { Formik, Form, Field, FieldProps, FormikActions } from "formik";
+import {
+  Formik,
+  Form,
+  Field,
+  FieldProps,
+  FormikActions,
+} from "formik";
 import * as Yup from "yup";
 import {
   makeStyles,
@@ -22,8 +28,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 
-import { Book, BookData } from "./common/Book";
-import { addBook, updateBook } from "./utils/api";
+import { Book, BookData } from "../common/Book";
+import { addBook, updateBook } from "../utils/api";
 
 const useStyles = makeStyles(
   (theme: Theme): StyleRules =>
@@ -46,7 +52,7 @@ const useStyles = makeStyles(
       },
       formControl: {
         margin: theme.spacing(2),
-        minWidth: '15%'
+        minWidth: "15%"
       },
       button: {
         width: "35%",
@@ -148,7 +154,7 @@ const BookForm: FunctionComponent<IProps> = ({
 
   return (
     <Formik
-      initialValues={bookData ? bookData : values}
+      initialValues={bookData ? bookData : initialState.book}
       validationSchema={BookSchema}
       onSubmit={(_, actions: FormikActions<Book>) => {
         handleSubmit(actions);
@@ -234,6 +240,7 @@ const BookForm: FunctionComponent<IProps> = ({
             render={({ field, form }: FieldProps<Book>): ReactElement => (
               <TextField
                 {...field}
+                value={values.pages}
                 id="outlined-number"
                 error={Boolean(form.errors.pages && form.touched.pages)}
                 helperText={
@@ -263,6 +270,7 @@ const BookForm: FunctionComponent<IProps> = ({
                 </InputLabel>
                 <Select
                   {...field}
+                  value={values.rate}
                   onChange={e => {
                     handleChange(e);
                     onSelect(e);

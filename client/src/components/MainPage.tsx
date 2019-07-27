@@ -8,9 +8,9 @@ import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { fetchAllBooks, deleteBook } from "./utils/api";
-import { sortByTitle } from "./utils/helpers";
-import { BookData, Book } from "./common/Book";
+import { fetchAllBooks, deleteBook } from "../utils/api";
+import { sortByTitle } from "../utils/helpers";
+import { BookData, Book } from "../common/Book";
 import BookForm from "./BookForm";
 
 const useStyles = makeStyles(
