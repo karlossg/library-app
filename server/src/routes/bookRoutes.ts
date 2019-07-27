@@ -85,12 +85,12 @@ export const BookRoutePlugin: Plugin<never> = {
           validate: {
             payload:  BookDataSchema.required(),
             params: Joi.object({
-              id: Joi.number().required(),
+              id: Joi.string().required(),
             }).required(),
           },
         },
         async handler(request) {
-          const { id } = request.params;
+          const id = +request.params.id.split('')[1];
           await updateBook(id, request.payload);
           return null;
         },
@@ -111,9 +111,9 @@ export const BookRoutePlugin: Plugin<never> = {
           },
         },
         async handler(request) {
-          const { id } = request.params;
-          
-          await deleteBook(Number(id.split('')[1]));
+          const id = +request.params.id.split('')[1];
+
+          await deleteBook(Number(id));
           return null;
         },
       });
