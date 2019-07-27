@@ -17,19 +17,12 @@ const useStyles = makeStyles(
   createStyles({
     container: {
       display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "center",
-      alignItems: "çenter"
+      flexWrap: "wrap"
     },
     card: {
       minWidth: 275,
       maxWidth: "45%",
       margin: 15
-    },
-    bullet: {
-      display: "inline-block",
-      margin: "0 2px",
-      transform: "scale(0.8)"
     },
     cardTitle: {
       fontSize: 14
@@ -43,26 +36,20 @@ const useStyles = makeStyles(
     },
     progress: {
       margin: "25%"
+    },
+    addButton: {
+      margin: 10
     }
   })
 );
 
 const MainPage: FunctionComponent = () => {
   const [books, setBooks] = useState<BookData[]>([]);
+  const [bookDataForEdit, setBookDataForEdit] = useState<BookData>();
   const [isLoading, setIsLoading] = useState<Boolean>(false);
-  const [isBookFormVisible, toggleBookForm] = useState<Boolean>(false);
+  const [isAddBookFormVisible, toggleAddBookForm] = useState<Boolean>(false);
+  const [isEditBookFormVisible, toggleEditBookForm] = useState<Boolean>(false);
   const classes = useStyles();
-
-  const addNewBook = (newBook: Book) => {
-    setBooks([
-      ...books,
-      {
-        ...newBook,
-        id: books.length + 1,
-        addedOn: new Date()
-      }
-    ]);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,16 +63,36 @@ const MainPage: FunctionComponent = () => {
     fetchData();
   }, []);
 
+  const addNewBook = (newBook: Book) => {
+    setBooks([
+      ...books,
+      {
+        ...newBook,
+        id: books.length + 1,
+        addedOn: new Date()
+      }
+    ]);
+  };
+
   const handleDelete = (id: number | undefined) => {
     const filteredBooks = books.filter(i => i.id !== id);
     setBooks(filteredBooks);
     deleteBook(id);
   };
 
-  const handleFormToggling = () => {
-    toggleBookForm(!isBookFormVisible);
+  const handleEdit = (id: number, newBookData: BookData) => {
+    const filteredBooks = books.filter(i => i.id !== id);
+    setBooks([...filteredBooks, newBookData]);
   };
-  console.log(books);
+
+  const handleFormToggling = (id?: number) => {
+    if (id && typeof id === "number") {
+      const bookForEdit = books.filter(book => book.id === id)[0];
+      setBookDataForEdit(bookForEdit);
+      toggleEditBookForm(!isEditBookFormVisible);
+    }
+    toggleAddBookForm(!isAddBookFormVisible);
+  };
   return (
     <Fragment>
       <div className={classes.appBar}>
@@ -131,13 +138,22 @@ const MainPage: FunctionComponent = () => {
                         </Typography>
                       </CardContent>
                       <CardActions>
-                        <Button
-                          onClick={() => handleDelete(book.id)}
-                          size="small"
-                        >
-                          Delete
-                        </Button>
-                        <Button size="small">Edit</Button>
+                        {!isEditBookFormVisible && (
+                          <Button
+                            onClick={() => handleDelete(book.id)}
+                            size="small"
+                          >
+                            Deleted
+                          </Button>
+                        )}
+                        {!isAddBookFormVisible && (
+                          <Button
+                            onClick={() => handleFormToggling(book.id)}
+                            size="small"
+                          >
+                            Edit
+                          </Button>
+                        )}
                       </CardActions>
                     </Card>
                   );
@@ -146,16 +162,29 @@ const MainPage: FunctionComponent = () => {
           </Fragment>
         )}
       </div>
-      {!isBookFormVisible && (
-        <Button size="small" onClick={handleFormToggling}>
+      {!isAddBookFormVisible && !isEditBookFormVisible && (
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.addButton}
+          onClick={() => handleFormToggling()}
+        >
           Add new Book
         </Button>
       )}
       <div>
-        {isBookFormVisible && (
+        {isAddBookFormVisible && !isEditBookFormVisible && (
           <BookForm
             handleFormToggling={handleFormToggling}
             addNewBook={addNewBook}
+          />
+        )}
+        {isEditBookFormVisible && (
+          <BookForm
+            handleFormToggling={handleFormToggling}
+            forEdit={true}
+            bookData={bookDataForEdit}
+            editBook={handleEdit}
           />
         )}
       </div>

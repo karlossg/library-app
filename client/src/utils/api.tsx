@@ -32,3 +32,13 @@ export const deleteBook = (bookId: number | undefined) => {
     throw new Error(error)
   })
 }
+
+export const updateBook = (bookId: number, bookData: Book) => {
+  return axios
+  .put(`${URL}/{${bookId}}`, bookData)
+  .then(response => response)
+  .catch(error => {
+    console.log(error)
+    throw new Error(error)
+  })
+}
