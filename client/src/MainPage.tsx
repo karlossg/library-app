@@ -3,6 +3,7 @@ import React, { useState, useEffect, Fragment, FunctionComponent } from 'react'
 import { fetchAllBooks } from './utils/api'
 import { sortByTitle } from './utils/helpers'
 import { Book } from './common/Book';
+import BookForm from './BookForm';
 
 const MainPage: FunctionComponent = () => {
   const [data, setData] = useState<Book[]>([])
@@ -38,6 +39,7 @@ const MainPage: FunctionComponent = () => {
           )}
         </div>
       )}
+    <div><BookForm/></div>
     </Fragment>
   )
 }
