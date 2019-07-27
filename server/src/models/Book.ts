@@ -54,5 +54,6 @@ export async function updateBook(id: Book['id'], bookData: BookData): Promise<vo
 }
 
 export async function deleteBook(id: Book['id']): Promise<void> {
+  console.log(id)
   books = books.filter(i => i.id !== id);
 }

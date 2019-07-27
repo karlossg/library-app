@@ -112,7 +112,8 @@ export const BookRoutePlugin: Plugin<never> = {
         },
         async handler(request) {
           const { id } = request.params;
-          await deleteBook(+id);
+          
+          await deleteBook(Number(id.split('')[1]));
           return null;
         },
       });
