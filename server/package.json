@@ -5,8 +5,23 @@
   "main": "index.js",
   "author": "Karol Grabowski",
   "license": "MIT",
-  "private": false,
+  "scripts": {
+    "test": "tsc --noEmit",
+    "start": "ts-node src/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts"
+  },
   "dependencies": {
+    "@hapi/hapi": "^18.3.1",
+    "@hapi/inert": "^5.2.1",
+    "@hapi/vision": "^5.5.2",
+    "@types/hapi__inert": "^5.2.0",
+    "@types/hapi__vision": "^5.5.0",
+    "hapi-swagger": "^10.0.2",
+    "ts-node": "^8.3.0",
+    "ts-node-dev": "^1.0.0-pre.40",
+    "tsconfig-paths": "^3.8.0",
+    "typesafe-hapi": "^3.1.0",
+    "typesafe-joi": "2.0.6",
     "typescript": "3.4"
   }
 }
