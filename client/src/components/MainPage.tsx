@@ -1,8 +1,5 @@
 import React, { useState, useEffect, Fragment, FunctionComponent } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
@@ -12,6 +9,7 @@ import { fetchAllBooks, deleteBook } from "../utils/api";
 import { sortByTitle } from "../utils/helpers";
 import { BookData, Book } from "../common/Book";
 import BookForm from "./BookForm";
+import BookCard from "./BookCard";
 
 const useStyles = makeStyles(
   createStyles({
@@ -116,46 +114,13 @@ const MainPage: FunctionComponent = () => {
                 .sort((a: BookData, b: BookData) => sortByTitle(a, b))
                 .map(book => {
                   return (
-                    <Card key={book.id} className={classes.card}>
-                      <CardContent>
-                        <Typography
-                          className={classes.cardTitle}
-                          color="textSecondary"
-                          gutterBottom
-                        >
-                          ISBN: {book.ISBN}
-                        </Typography>
-                        <Typography variant="h5" component="h2">
-                          {book.title}
-                        </Typography>
-
-                        <Typography variant="body2" component="p">
-                          Author: {book.author}
-                          <br />
-                          Pages: {book.pages}
-                          <br />
-                          Rate: {book.rate}
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        {!isEditBookFormVisible && (
-                          <Button
-                            onClick={() => handleDelete(book.id)}
-                            size="small"
-                          >
-                            Deleted
-                          </Button>
-                        )}
-                        {!isAddBookFormVisible && (
-                          <Button
-                            onClick={() => handleFormToggling(book.id)}
-                            size="small"
-                          >
-                            Edit
-                          </Button>
-                        )}
-                      </CardActions>
-                    </Card>
+                    <BookCard 
+                      book={book}
+                      isEditBookFormVisible={isEditBookFormVisible}
+                      isAddBookFormVisible={isAddBookFormVisible}
+                      handleDelete={handleDelete}
+                      handleFormToggling={handleFormToggling}
+                    />
                   );
                 })
             )}
